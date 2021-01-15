@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.covid19vms.entity.Beneficiary;
+import io.covid19vms.entity.BeneficiaryFeedback;
 import io.covid19vms.service.BeneficiaryService;
 
 @CrossOrigin
@@ -22,10 +23,19 @@ public class BeneficiaryController {
 	private BeneficiaryService beneficiaryService;
 
 	@PostMapping("/apply_for_vaccination/{id}")
-	public ResponseEntity<?> authenticateUser(@PathVariable Integer id, @RequestBody Beneficiary beneficiary) {
+	public ResponseEntity<?> applyForVaccination(@PathVariable Integer id, @RequestBody Beneficiary beneficiary) {
 		try {
 			return new ResponseEntity<>(beneficiaryService.updateBeneficiaryRecord(beneficiary, id),
 					HttpStatus.ACCEPTED);
+		} catch (RuntimeException e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+
+	@PostMapping("/feedback/{id}")
+	public ResponseEntity<?> saveFeedbackDetails(@PathVariable Integer id, @RequestBody BeneficiaryFeedback feedback) {
+		try {
+			return new ResponseEntity<>(beneficiaryService.saveFeedback(feedback, id), HttpStatus.ACCEPTED);
 		} catch (RuntimeException e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
