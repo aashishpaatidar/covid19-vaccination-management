@@ -9,10 +9,7 @@ import javax.persistence.*;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User extends BaseEntity {
 
-    @Column(name = "user_name", length = 50)
-    private String userName;
-
-    @Column(length = 100, unique = true)
+    @Column(length = 100)
     private String email;
 
     @Column(length = 100)
@@ -26,14 +23,6 @@ public class User extends BaseEntity {
     private Role userRole;
 
     public User() {
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
     }
 
     public String getEmail() {

@@ -1,5 +1,7 @@
 package io.covid19vms.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @Entity
@@ -12,6 +14,7 @@ public class BeneficiaryFeedback extends BaseEntity {
     @Column(length = 200)
     private String details;
 
+    @JsonIgnoreProperties("feedback")
     @OneToOne
     @JoinColumn(name = "beneficiary_id")
     private Beneficiary beneficiary;

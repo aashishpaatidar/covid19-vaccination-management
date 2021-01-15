@@ -1,5 +1,7 @@
 package io.covid19vms.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,20 +21,24 @@ public class Beneficiary extends User {
     @Column(name = "adhaar_no", length = 12, unique = true)
     private String adhaarNumber;
 
+    @JsonIgnoreProperties("beneficiaryList")
     @ManyToOne
     @JoinColumn(name = "centre_id")
     private VaccinationCentre vaccinationCentre;
 
-    @OneToOne
-    @JoinColumn(name = "address_id")
-    private Address address;
+    @OneToOne(targetEntity = District.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "district_id")
+    private District district;
 
+    @JsonIgnoreProperties("beneficiary")
     @OneToOne(mappedBy = "beneficiary", fetch = FetchType.LAZY)
     private BeneficiaryFeedback feedback;
 
+    @JsonIgnoreProperties("beneficiary")
     @OneToMany(mappedBy = "beneficiary", fetch = FetchType.LAZY)
     private List<Appointment> appointments = new ArrayList<>();
 
+    @JsonIgnoreProperties("districtBeneficiary")
     @OneToOne(mappedBy = "districtBeneficiary", fetch = FetchType.LAZY)
     private DistrictUserRequest request;
 
@@ -71,20 +77,20 @@ public class Beneficiary extends User {
         this.adhaarNumber = adhaarNumber;
     }
 
-    public VaccinationCentre getCentre() {
+    public VaccinationCentre getVaccinationCentre() {
         return vaccinationCentre;
     }
 
-    public void setCentre(VaccinationCentre centre) {
-        this.vaccinationCentre = centre;
+    public void setVaccinationCentre(VaccinationCentre vaccinationCentre) {
+        this.vaccinationCentre = vaccinationCentre;
     }
 
-    public Address getAddress() {
-        return address;
+    public District getDistrict() {
+        return district;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setDistrict(District district) {
+        this.district = district;
     }
 
     public BeneficiaryFeedback getFeedback() {

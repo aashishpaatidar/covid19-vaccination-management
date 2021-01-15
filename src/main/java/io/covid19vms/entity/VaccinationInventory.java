@@ -1,5 +1,7 @@
 package io.covid19vms.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @Entity
@@ -12,6 +14,7 @@ public class VaccinationInventory extends BaseEntity {
     @Column(name = "capacity")
     private int centreCapacity;
 
+    @JsonIgnoreProperties("inventory")
     @OneToOne
     @JoinColumn(name = "centre_id")
     private VaccinationCentre centre;

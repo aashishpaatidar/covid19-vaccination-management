@@ -1,5 +1,7 @@
 package io.covid19vms.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +16,11 @@ public class DistrictOffice extends User {
     @Column(name = "district_inventory")
     private int districtInventory;
 
-    @OneToOne
-    @JoinColumn(name = "address_id")
-    private Address districtAddress;
+    @OneToOne(targetEntity = District.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "district_id")
+    private District district;
 
+    @JsonIgnoreProperties("districtOffice")
     @OneToMany(mappedBy = "districtOffice")
     private List<VaccinationCentre> centres = new ArrayList<>();
 
@@ -40,12 +43,12 @@ public class DistrictOffice extends User {
         this.districtInventory = districtInventory;
     }
 
-    public Address getDistrictAddress() {
-        return districtAddress;
+    public District getDistrict() {
+        return district;
     }
 
-    public void setDistrictAddress(Address districtAddress) {
-        this.districtAddress = districtAddress;
+    public void setDistrict(District district) {
+        this.district = district;
     }
 
     public List<VaccinationCentre> getCentres() {

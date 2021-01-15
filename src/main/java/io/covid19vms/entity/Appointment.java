@@ -1,5 +1,6 @@
 package io.covid19vms.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -15,6 +16,7 @@ public class Appointment extends BaseEntity {
     @Column(name = "is_active")
     private boolean isActive;
 
+    @JsonIgnoreProperties("appointments")
     @ManyToOne
     @JoinColumn(name = "beneficiary_id")
     private Beneficiary beneficiary;

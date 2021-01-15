@@ -1,5 +1,7 @@
 package io.covid19vms.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,17 +13,20 @@ public class VaccinationCentre extends User {
     @Column(name = "centre_name", length = 12)
     private String centreName;
 
-    @OneToOne
-    @JoinColumn(name = "address_id")
-    private Address centreAddress;
+    @OneToOne(targetEntity = District.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "district_id")
+    private District district;
 
+    @JsonIgnoreProperties("centres")
     @ManyToOne
     @JoinColumn(name = "district_office_id")
     private DistrictOffice districtOffice;
 
+    @JsonIgnoreProperties("vaccinationCentre")
     @OneToMany(mappedBy = "vaccinationCentre")
     private List<Beneficiary> beneficiaryList = new ArrayList<>();
 
+    @JsonIgnoreProperties("centre")
     @OneToOne(mappedBy = "centre")
     private VaccinationInventory inventory;
 
@@ -44,12 +49,12 @@ public class VaccinationCentre extends User {
         this.beneficiaryList = beneficiaryList;
     }
 
-    public Address getCentreAddress() {
-        return centreAddress;
+    public District getDistrict() {
+        return district;
     }
 
-    public void setCentreAddress(Address centreAddress) {
-        this.centreAddress = centreAddress;
+    public void setDistrict(District district) {
+        this.district = district;
     }
 
     public VaccinationInventory getInventory() {
@@ -70,7 +75,7 @@ public class VaccinationCentre extends User {
 
     public void addBeneficiary(Beneficiary beneficiary) {
         beneficiaryList.add(beneficiary);
-        beneficiary.setCentre(this);
+        beneficiary.setVaccinationCentre(this);
     }
 
     public void addInventory(VaccinationInventory inventory) {
