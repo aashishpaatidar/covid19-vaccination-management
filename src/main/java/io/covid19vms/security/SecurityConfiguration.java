@@ -16,40 +16,36 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private MyUserDetailsService userDetailsService;
+	@Autowired
+	private MyUserDetailsService userDetailsService;
 
-    @Autowired
-    private JwtRequestFilter requestFilter;
+	@Autowired
+	private JwtRequestFilter requestFilter;
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService);
-    }
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(userDetailsService);
+	}
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and()
-                .addFilterBefore(requestFilter, UsernamePasswordAuthenticationFilter.class)
-                .csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/admin").hasAuthority(RoleType.ADMIN.name())
-                .antMatchers("/authenticate").permitAll()
-                .antMatchers("/covid/**").permitAll()
-                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .anyRequest().authenticated()
-                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-    }
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.cors().and().addFilterBefore(requestFilter, UsernamePasswordAuthenticationFilter.class).csrf().disable()
+				.authorizeRequests().antMatchers("/admin").hasAuthority(RoleType.ADMIN.name())
+				.antMatchers("/authenticate").permitAll().antMatchers("/covid/**").permitAll()
+				.antMatchers("/beneficiary/**").permitAll().antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+				.anyRequest().authenticated().and().sessionManagement()
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+	}
 
-    @Bean
-    public PasswordEncoder getPassword() {
-        return NoOpPasswordEncoder.getInstance();
-    }
+	@Bean
+	public PasswordEncoder getPassword() {
+		return NoOpPasswordEncoder.getInstance();
+	}
 
-    @Override
-    @Bean
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
+	@Override
+	@Bean
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
+	}
 
 }
