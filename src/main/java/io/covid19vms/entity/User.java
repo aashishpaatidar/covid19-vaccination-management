@@ -19,7 +19,7 @@ public class User extends BaseEntity {
             joinColumns = @JoinColumn(name="user_id", referencedColumnName="id"),
             inverseJoinColumns = @JoinColumn(name="role_id", referencedColumnName="id")
     )
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Role userRole;
 
     public User() {
@@ -47,5 +47,10 @@ public class User extends BaseEntity {
 
     public void setUserRole(Role userRole) {
         this.userRole = userRole;
+    }
+
+    public void addRole(Role role) {
+        this.setUserRole(role);
+        role.setRoleName(this.getUserRole().getRoleName());
     }
 }

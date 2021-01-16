@@ -22,7 +22,6 @@ public class Beneficiary extends User {
 	@Column(length = 20)
 	private String name;
 
-	@Column(nullable = true)
 	private Integer age;
 
 	@Column(name = "is_vaccinated")

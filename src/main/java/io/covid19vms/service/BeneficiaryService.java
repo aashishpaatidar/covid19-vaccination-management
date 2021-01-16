@@ -7,4 +7,6 @@ public interface BeneficiaryService {
 	Beneficiary updateBeneficiaryRecord(Beneficiary beneficiary, Integer id);
 
 	BeneficiaryFeedback saveFeedback(BeneficiaryFeedback feedback, Integer id);
+
+	Beneficiary saveBeneficiary(Beneficiary beneficiary);
 }

@@ -20,11 +20,11 @@ public class BeneficiaryServiceImpl implements BeneficiaryService {
 	private BeneficiaryRepository beneficiaryRepo;
 
 	@Autowired
-	private BeneficiaryFeedbackRepository feedbackRepo;;
+	private BeneficiaryFeedbackRepository feedbackRepo;
 
 	@Override
 	public Beneficiary updateBeneficiaryRecord(Beneficiary beneficiary, Integer id) {
-		Beneficiary returnedBeneficiary = null;
+		Beneficiary returnedBeneficiary = new Beneficiary();
 		Optional<Beneficiary> optionalBeneficiary = beneficiaryRepo.findById(id);
 		if (optionalBeneficiary.isPresent()) {
 			returnedBeneficiary = optionalBeneficiary.get();
@@ -43,5 +43,10 @@ public class BeneficiaryServiceImpl implements BeneficiaryService {
 			feedback.setBeneficiary(returnedBeneficiary);
 		}
 		return feedbackRepo.save(feedback);
+	}
+
+	@Override
+	public Beneficiary saveBeneficiary(Beneficiary beneficiary) {
+		return beneficiaryRepo.save(beneficiary);
 	}
 }
