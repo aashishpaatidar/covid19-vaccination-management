@@ -26,8 +26,8 @@ public class BeneficiaryController {
 	public ResponseEntity<?> applyForVaccination(@PathVariable Integer id, @RequestBody Beneficiary beneficiary) {
 		System.out.println(beneficiary.getAdhaarNumber());
 		try {
-			return new ResponseEntity<>(beneficiaryService.updateBeneficiaryRecord(beneficiary, id),
-					HttpStatus.ACCEPTED);
+			beneficiaryService.applyForVaccination(beneficiary, id);
+			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (RuntimeException e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -36,7 +36,8 @@ public class BeneficiaryController {
 	@PostMapping("/feedback/{id}")
 	public ResponseEntity<?> saveFeedbackDetails(@PathVariable Integer id, @RequestBody BeneficiaryFeedback feedback) {
 		try {
-			return new ResponseEntity<>(beneficiaryService.saveFeedback(feedback, id), HttpStatus.ACCEPTED);
+			beneficiaryService.saveFeedback(feedback, id);
+			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (RuntimeException e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}

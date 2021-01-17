@@ -1,9 +1,11 @@
 package io.covid19vms.authDto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.covid19vms.entity.User;
 
 import java.util.Optional;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDto {
     private int id;
     private String email;

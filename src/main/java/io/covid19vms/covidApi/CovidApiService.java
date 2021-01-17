@@ -3,7 +3,6 @@ package io.covid19vms.covidApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 
 @Service
 public class CovidApiService {

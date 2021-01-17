@@ -14,7 +14,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
 @Table(name = "beneficiary")
 public class Beneficiary extends User {
@@ -22,6 +24,7 @@ public class Beneficiary extends User {
 	@Column(length = 20)
 	private String name;
 
+	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private Integer age;
 
 	@Column(name = "is_vaccinated")
@@ -40,15 +43,15 @@ public class Beneficiary extends User {
 	private District district;
 
 	@JsonIgnoreProperties("beneficiary")
-	@OneToOne(mappedBy = "beneficiary", fetch = FetchType.LAZY)
+	@OneToOne(mappedBy = "beneficiary", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private BeneficiaryFeedback feedback;
 
 	@JsonIgnoreProperties("beneficiary")
-	@OneToMany(mappedBy = "beneficiary", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "beneficiary", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Appointment> appointments = new ArrayList<>();
 
 	@JsonIgnoreProperties("districtBeneficiary")
-	@OneToOne(mappedBy = "districtBeneficiary", fetch = FetchType.LAZY)
+	@OneToOne(mappedBy = "districtBeneficiary", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private DistrictUserRequest request;
 
 	public Beneficiary() {

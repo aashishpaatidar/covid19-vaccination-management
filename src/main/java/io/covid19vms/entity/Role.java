@@ -1,7 +1,10 @@
 package io.covid19vms.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import javax.persistence.*;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
 @Table(name = "role")
 public class Role extends BaseEntity {
