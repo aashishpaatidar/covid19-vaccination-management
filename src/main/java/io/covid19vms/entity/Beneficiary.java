@@ -44,8 +44,8 @@ public class Beneficiary extends User {
 	private BeneficiaryFeedback feedback;
 
 	@JsonIgnoreProperties("beneficiary")
-	@OneToMany(mappedBy = "beneficiary", fetch = FetchType.LAZY)
-	private List<Appointment> appointments = new ArrayList<>();
+	@OneToOne(mappedBy = "beneficiary", fetch = FetchType.LAZY)
+	private Appointment appointment;
 
 	@JsonIgnoreProperties("districtBeneficiary")
 	@OneToOne(mappedBy = "districtBeneficiary", fetch = FetchType.LAZY)
@@ -110,12 +110,12 @@ public class Beneficiary extends User {
 		this.feedback = feedback;
 	}
 
-	public List<Appointment> getAppointments() {
-		return appointments;
+	public Appointment getAppointments() {
+		return appointment;
 	}
 
-	public void setAppointments(List<Appointment> appointments) {
-		this.appointments = appointments;
+	public void setAppointments(Appointment appointments) {
+		this.appointment = appointments;
 	}
 
 	public DistrictUserRequest getRequest() {
@@ -132,7 +132,7 @@ public class Beneficiary extends User {
 	}
 
 	public void addAppointments(Appointment appointment) {
-		appointments.add(appointment);
+		//appointment.add(appointment);
 		appointment.setBeneficiary(this);
 	}
 
