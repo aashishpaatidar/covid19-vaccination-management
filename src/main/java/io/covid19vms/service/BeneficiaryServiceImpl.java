@@ -1,9 +1,11 @@
 package io.covid19vms.service;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import io.covid19vms.entity.DistrictUserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,26 +25,24 @@ public class BeneficiaryServiceImpl implements BeneficiaryService {
 	private BeneficiaryFeedbackRepository feedbackRepo;
 
 	@Override
-	public Beneficiary updateBeneficiaryRecord(Beneficiary beneficiary, Integer id) {
-		Beneficiary returnedBeneficiary = new Beneficiary();
+	public Beneficiary applyForVaccination(Beneficiary beneficiary, Integer id) {
 		Optional<Beneficiary> optionalBeneficiary = beneficiaryRepo.findById(id);
 		if (optionalBeneficiary.isPresent()) {
-			returnedBeneficiary = optionalBeneficiary.get();
-			returnedBeneficiary.setAdhaarNumber(beneficiary.getAdhaarNumber());
-			returnedBeneficiary.setAge(beneficiary.getAge());
+			DistrictUserRequest request = new DistrictUserRequest();
+			request.setRequestDate(LocalDate.now());
+			optionalBeneficiary.get().addDistrictUserRequest(request);
+			optionalBeneficiary.get().setAdhaarNumber(beneficiary.getAdhaarNumber());
+			optionalBeneficiary.get().setAge(beneficiary.getAge());
 		}
-		return beneficiaryRepo.save(returnedBeneficiary);
+		return beneficiaryRepo.save(optionalBeneficiary.get());
 	}
 
 	@Override
-	public BeneficiaryFeedback saveFeedback(BeneficiaryFeedback feedback, Integer id) {
+	public Beneficiary saveFeedback(BeneficiaryFeedback feedback, Integer id) {
 		Beneficiary returnedBeneficiary = null;
 		Optional<Beneficiary> optionalBeneficiary = beneficiaryRepo.findById(id);
-		if (optionalBeneficiary.isPresent()) {
-			returnedBeneficiary = optionalBeneficiary.get();
-			feedback.setBeneficiary(returnedBeneficiary);
-		}
-		return feedbackRepo.save(feedback);
+		optionalBeneficiary.ifPresent(beneficiary -> beneficiary.addBeneficiaryFeedback(feedback));
+		return beneficiaryRepo.save(optionalBeneficiary.get());
 	}
 
 	@Override

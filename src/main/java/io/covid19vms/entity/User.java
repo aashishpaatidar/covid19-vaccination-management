@@ -1,7 +1,11 @@
 package io.covid19vms.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import javax.persistence.*;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
 @Table(name = "user",
         uniqueConstraints = @UniqueConstraint(columnNames = "email")

@@ -1,7 +1,6 @@
 package io.covid19vms.entity;
 
-import java.util.ArrayList;
-import java.util.List;
+
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -9,12 +8,14 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
 @Table(name = "beneficiary")
 public class Beneficiary extends User {
@@ -22,6 +23,7 @@ public class Beneficiary extends User {
 	@Column(length = 20)
 	private String name;
 
+	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private Integer age;
 
 	@Column(name = "is_vaccinated")
@@ -40,15 +42,16 @@ public class Beneficiary extends User {
 	private District district;
 
 	@JsonIgnoreProperties("beneficiary")
-	@OneToOne(mappedBy = "beneficiary", fetch = FetchType.LAZY)
+	@OneToOne(mappedBy = "beneficiary", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private BeneficiaryFeedback feedback;
 
 	@JsonIgnoreProperties("beneficiary")
 	@OneToOne(mappedBy = "beneficiary", fetch = FetchType.LAZY)
 	private Appointment appointment;
 
+
 	@JsonIgnoreProperties("districtBeneficiary")
-	@OneToOne(mappedBy = "districtBeneficiary", fetch = FetchType.LAZY)
+	@OneToOne(mappedBy = "districtBeneficiary", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private DistrictUserRequest request;
 
 	public Beneficiary() {

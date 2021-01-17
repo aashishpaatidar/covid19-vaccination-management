@@ -1,6 +1,7 @@
 package io.covid19vms.service;
 
 import io.covid19vms.authDto.RegisterDto;
+import io.covid19vms.authDto.UserDto;
 import io.covid19vms.entity.*;
 import io.covid19vms.repository.DistrictRepository;
 import io.covid19vms.repository.RoleRepository;
@@ -24,6 +25,9 @@ public class RegisterServiceImpl implements RegisterService {
     private DistrictRepository districtRepo;
 
     @Autowired
+    private DistrictOfficeService officeService;
+
+    @Autowired
     private RoleRepository roleRepo;
 
     @Autowired
@@ -41,33 +45,36 @@ public class RegisterServiceImpl implements RegisterService {
     }
 
     @Override
-    public User registerUser(RegisterDto dto) {
-        User user = new User();
-        user.setEmail(dto.getEmail());
-        user.setPassword(encoder.encode(dto.getPassword()));
-        user.setUserRole(roleRepo.findById(dto.getRoleId()).get());
-        User u = userService.saveUserDetails(user);
+    public UserDto registerUser(RegisterDto dto) {
 
-        if(user.getUserRole().getRoleName().equals(RoleType.BENEFICIARY)) {
+        UserDto user = new UserDto();
+        Role role = roleRepo.findById(dto.getRoleId()).get();
+        String encryptedPassword = encoder.encode(dto.getPassword());
+
+        if(role.getRoleName().equals(RoleType.BENEFICIARY)) {
             Beneficiary beneficiary = new Beneficiary();
-            beneficiary.setId(u.getId());
+            beneficiary.setEmail(dto.getEmail());
+            beneficiary.setPassword(encryptedPassword);
             beneficiary.setName(dto.getName());
-            beneficiary.setAge(50);
             beneficiary.setDistrict(districtRepo.findById(dto.getDistrictId()).get());
-            beneficiaryService.saveBeneficiary(beneficiary);
+            user.setId(beneficiaryService.saveBeneficiary(beneficiary).getId());
+
         }
-        else if(user.getUserRole().getRoleName().equals(RoleType.CENTRE)) {
+        else if(role.getRoleName().equals(RoleType.CENTRE)) {
             VaccinationCentre vc = new VaccinationCentre();
-            vc.setId(u.getId());
+            vc.setEmail(dto.getEmail());
+            vc.setPassword(encryptedPassword);
             vc.setCentreName(dto.getName());
             vc.setDistrict(districtRepo.findById(dto.getDistrictId()).get());
-            vaccinationCentreService.saveVaccinationCentre(vc);
+            user.setId(vaccinationCentreService.saveVaccinationCentre(vc).getId());
         }
         else {
             DistrictOffice office = new DistrictOffice();
-            office.setId(u.getId());
+            office.setEmail(dto.getEmail());
+            office.setPassword(encryptedPassword);
             office.setOfficeName(dto.getName());
             office.setDistrict(districtRepo.findById(dto.getDistrictId()).get());
+            user.setId(officeService.saveDistrictOffice(office).getId());
         }
         return user;
     }

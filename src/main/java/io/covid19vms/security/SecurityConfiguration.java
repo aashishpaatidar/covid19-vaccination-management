@@ -36,9 +36,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin").hasAuthority(RoleType.ADMIN.name())
                 .antMatchers("/authenticate").permitAll()
                 .antMatchers("/covid/**").permitAll()
+
+                .antMatchers("/lists/**").permitAll()
+                .antMatchers("/register").permitAll()
                 .antMatchers("/beneficiary/**").permitAll()
                 .antMatchers("/vaccination_centre/**").permitAll()
-                .antMatchers("/register").permitAll()
+                .antMatchers("/district_office/**").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .anyRequest().authenticated()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
