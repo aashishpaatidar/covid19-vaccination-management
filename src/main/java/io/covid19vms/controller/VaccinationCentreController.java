@@ -69,7 +69,7 @@ public class VaccinationCentreController {
 	
 	}
 	
-	@GetMapping("/request/status/{id}")
+	@GetMapping("/request/status/")
 	public ResponseEntity<?> updateStatus(@RequestParam String aadharNumber)
 	{
 		try {

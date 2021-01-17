@@ -114,14 +114,18 @@ public class VaccinationCentreServiceImpl implements VaccinationCentreService {
 	@Override
 	public Integer getBeneficiaryReports(Integer id) {
 		// TODO Auto-generated method stub
-		List<Beneficiary> listOfBeneficiary=beneficiaryRepo.findByVaccinationCentre(id);
+		Optional<VaccinationCentre> returnedVaccinationCentre=repository.findById(id);
+		List<Beneficiary> listOfBeneficiary=beneficiaryRepo.findByVaccinationCentre(returnedVaccinationCentre.get());
+		for(Beneficiary b: listOfBeneficiary)
+			System.out.println(b.getVaccinationCentre()+b.getName());
 		return listOfBeneficiary.size();
 	}
 
 	@Override
 	public List<VaccinationCentreFeedbackDto> getBeneficairyFeedbackList(Integer id) {
 		// TODO Auto-generated method stub
-		List<Beneficiary> listOfBeneficiary=beneficiaryRepo.findByVaccinationCentre(id);
+		Optional<VaccinationCentre> returnedVaccinationCentre=repository.findById(id);
+		List<Beneficiary> listOfBeneficiary=beneficiaryRepo.findByVaccinationCentre(returnedVaccinationCentre.get());
 		List<VaccinationCentreFeedbackDto> listOfFeedback=new ArrayList<>();
 		for(Beneficiary b : listOfBeneficiary)
 		{
