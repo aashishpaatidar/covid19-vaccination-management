@@ -1,7 +1,6 @@
 package io.covid19vms.entity;
 
-import java.util.ArrayList;
-import java.util.List;
+
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -9,7 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -47,8 +46,9 @@ public class Beneficiary extends User {
 	private BeneficiaryFeedback feedback;
 
 	@JsonIgnoreProperties("beneficiary")
-	@OneToMany(mappedBy = "beneficiary", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private List<Appointment> appointments = new ArrayList<>();
+	@OneToOne(mappedBy = "beneficiary", fetch = FetchType.LAZY)
+	private Appointment appointment;
+
 
 	@JsonIgnoreProperties("districtBeneficiary")
 	@OneToOne(mappedBy = "districtBeneficiary", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -113,12 +113,12 @@ public class Beneficiary extends User {
 		this.feedback = feedback;
 	}
 
-	public List<Appointment> getAppointments() {
-		return appointments;
+	public Appointment getAppointments() {
+		return appointment;
 	}
 
-	public void setAppointments(List<Appointment> appointments) {
-		this.appointments = appointments;
+	public void setAppointments(Appointment appointments) {
+		this.appointment = appointments;
 	}
 
 	public DistrictUserRequest getRequest() {
@@ -135,7 +135,7 @@ public class Beneficiary extends User {
 	}
 
 	public void addAppointments(Appointment appointment) {
-		appointments.add(appointment);
+		//appointment.add(appointment);
 		appointment.setBeneficiary(this);
 	}
 

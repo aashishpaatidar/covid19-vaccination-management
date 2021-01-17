@@ -19,7 +19,7 @@ public class Appointment extends BaseEntity {
     private boolean isActive;
 
     @JsonIgnoreProperties("appointments")
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "beneficiary_id")
     private Beneficiary beneficiary;
 

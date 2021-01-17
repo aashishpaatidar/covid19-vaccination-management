@@ -36,6 +36,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin").hasAuthority(RoleType.ADMIN.name())
                 .antMatchers("/authenticate").permitAll()
                 .antMatchers("/covid/**").permitAll()
+
                 .antMatchers("/lists/**").permitAll()
                 .antMatchers("/register").permitAll()
                 .antMatchers("/beneficiary/**").permitAll()
