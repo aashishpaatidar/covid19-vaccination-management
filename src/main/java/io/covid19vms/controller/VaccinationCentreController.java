@@ -27,6 +27,7 @@ public class VaccinationCentreController {
 		try {
 			return new ResponseEntity<>(service.getCapacityAndStock(id), HttpStatus.ACCEPTED);
 		} catch (RuntimeException e) {
+			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
@@ -43,9 +44,9 @@ public class VaccinationCentreController {
 	}
 
 	@PutMapping("/inventory/stock/{id}")
-	public ResponseEntity<?> updateStock(@PathVariable Integer id, @RequestBody Integer Stock) {
+	public ResponseEntity<?> updateStock(@PathVariable Integer id, @RequestBody Integer stock) {
 		try {
-			return new ResponseEntity<>(service.updateStock(id, Stock), HttpStatus.ACCEPTED);
+			return new ResponseEntity<>(service.updateStock(id, stock), HttpStatus.ACCEPTED);
 		} catch (RuntimeException e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
