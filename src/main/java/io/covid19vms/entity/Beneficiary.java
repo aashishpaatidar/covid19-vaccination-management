@@ -49,10 +49,9 @@ public class Beneficiary extends User {
 	@OneToOne(mappedBy = "beneficiary", fetch = FetchType.LAZY)
 	private Appointment appointment;
 
-
-	@JsonIgnoreProperties("districtBeneficiary")
-	@OneToOne(mappedBy = "districtBeneficiary", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private DistrictUserRequest request;
+//	@JsonIgnoreProperties("districtBeneficiary")
+//	@OneToOne(mappedBy = "districtBeneficiary", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//	private DistrictUserRequest request;
 
 	public Beneficiary() {
 	}
@@ -121,13 +120,13 @@ public class Beneficiary extends User {
 		this.appointment = appointments;
 	}
 
-	public DistrictUserRequest getRequest() {
-		return request;
-	}
-
-	public void setRequest(DistrictUserRequest request) {
-		this.request = request;
-	}
+//	public DistrictUserRequest getRequest() {
+//		return request;
+//	}
+//
+//	public void setRequest(DistrictUserRequest request) {
+//		this.request = request;
+//	}
 
 	public void addBeneficiaryFeedback(BeneficiaryFeedback feedback) {
 		this.setFeedback(feedback);
@@ -139,9 +138,9 @@ public class Beneficiary extends User {
 		appointment.setBeneficiary(this);
 	}
 
-	public void addDistrictUserRequest(DistrictUserRequest request) {
-		this.setRequest(request);
-		request.setDistrictBeneficiary(this);
-	}
+//	public void addDistrictUserRequest(DistrictUserRequest request) {
+//		this.setRequest(request);
+//		request.setDistrictBeneficiary(this);
+//	}
 
 }

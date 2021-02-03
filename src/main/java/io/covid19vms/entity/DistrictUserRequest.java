@@ -20,7 +20,7 @@ public class DistrictUserRequest extends BaseEntity {
     private boolean requestStatus;
 
     @JsonIgnoreProperties("request")
-    @OneToOne
+    @OneToOne(targetEntity = Beneficiary.class)
     @JoinColumn(name = "beneficiary_id")
     private Beneficiary districtBeneficiary;
 

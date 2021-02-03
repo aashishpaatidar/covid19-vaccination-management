@@ -9,5 +9,7 @@ import io.covid19vms.entity.VaccinationCentre;
 
 public interface BeneficiaryRepository extends JpaRepository<Beneficiary, Integer> {
 	Beneficiary findByAdhaarNumber(String aadharNumber);
+
 	List<Beneficiary> findByVaccinationCentre(VaccinationCentre vaccinationCentre);
+
 }

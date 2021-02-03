@@ -11,8 +11,8 @@ import io.covid19vms.entity.VaccinationInventory;
 public interface VaccinationCentreService {
     VaccinationCentre saveVaccinationCentre(VaccinationCentre vaccinationCentre);
     VaccinationCentreRequestDto getDetailsByAadhar(Integer id,String aadharNumber);
-    Integer updateCapacity(Integer id,VaccinationInventory capacity);
-    Integer updateStock(Integer id,VaccinationInventory stock);
+    Integer updateCapacity(Integer id,Integer capacity);
+    Integer updateStock(Integer id,Integer stock);
     VaccinationInventory getCapacityAndStock(Integer id);
     Integer getBeneficiaryReports(Integer id);
     List<VaccinationCentreFeedbackDto> getBeneficairyFeedbackList(Integer id);

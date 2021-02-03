@@ -1,7 +1,5 @@
 package io.covid19vms.authDto;
 
-import io.covid19vms.entity.Role;
-
 public class RegisterDto {
     private String email;
     private String password;

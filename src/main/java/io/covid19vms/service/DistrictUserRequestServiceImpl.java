@@ -18,4 +18,9 @@ public class DistrictUserRequestServiceImpl implements DistrictUserRequestServic
     public List<DistrictUserRequest> getRequestList(int districtId) {
         return requestRepo.getRequestedUsers(districtId);
     }
+
+	@Override
+	public DistrictUserRequest saveDistrictUserRequest(DistrictUserRequest districtUserRequest) {
+		return requestRepo.save(districtUserRequest);
+	}
 }

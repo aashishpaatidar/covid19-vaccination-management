@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface DistrictUserRequestService {
     List<DistrictUserRequest> getRequestList(int districtId);
+    DistrictUserRequest saveDistrictUserRequest(DistrictUserRequest districtUserRequest);
 }

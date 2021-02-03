@@ -24,7 +24,6 @@ public class BeneficiaryController {
 
 	@PostMapping("/apply_for_vaccination/{id}")
 	public ResponseEntity<?> applyForVaccination(@PathVariable Integer id, @RequestBody Beneficiary beneficiary) {
-		System.out.println(beneficiary.getAdhaarNumber());
 		try {
 			beneficiaryService.applyForVaccination(beneficiary, id);
 			return new ResponseEntity<>(HttpStatus.OK);

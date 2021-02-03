@@ -25,125 +25,110 @@ import io.covid19vms.repository.VaccinationInventoryRepository;
 @Service
 @Transactional
 public class VaccinationCentreServiceImpl implements VaccinationCentreService {
-    @Autowired
-    private VaccinationCentreRepository repository;
-    @Autowired
-    private VaccinationInventoryRepository vaccinationInventoryRepo;
-    @Autowired
-    private BeneficiaryRepository beneficiaryRepo;
-    @Autowired
-    private AppointmentRepository appointmentRepo;
-    
-    
-    @Override
-    public VaccinationCentre saveVaccinationCentre(VaccinationCentre vaccinationCentre) {
-        return repository.save(vaccinationCentre);
-    }
+	@Autowired
+	private VaccinationCentreRepository repository;
+	@Autowired
+	private VaccinationInventoryRepository vaccinationInventoryRepo;
+	@Autowired
+	private BeneficiaryRepository beneficiaryRepo;
+	@Autowired
+	private AppointmentRepository appointmentRepo;
 
 	@Override
-	public VaccinationCentreRequestDto getDetailsByAadhar(Integer id, String aadharNumber) {
-		// TODO Auto-generated method stub
-		Beneficiary returnedBeneficiary=beneficiaryRepo.findByAdhaarNumber(aadharNumber);
-		Appointment returnedAppointment=returnedBeneficiary.getAppointments();
-		if(returnedBeneficiary.getVaccinationCentre().getId()==id)
-		{
-		VaccinationCentreRequestDto responseDto=new VaccinationCentreRequestDto();
-		responseDto.setAadharNumber(returnedBeneficiary.getAdhaarNumber());
-		responseDto.setAge(returnedBeneficiary.getAge());
-		responseDto.setAppointmentDate(returnedAppointment.getAppointmentDate().toString());
-		responseDto.setName(returnedBeneficiary.getName());
-		responseDto.setStatus(returnedAppointment.isActive());
-		
-		return responseDto;
+	public VaccinationCentre saveVaccinationCentre(VaccinationCentre vaccinationCentre) {
+		return repository.save(vaccinationCentre);
+	}
+
+	@Override
+	public VaccinationCentreRequestDto getDetailsByAadhar(Integer id, String adhaarNumber) {
+		Beneficiary returnedBeneficiary = beneficiaryRepo.findByAdhaarNumber(adhaarNumber);
+		Appointment returnedAppointment = returnedBeneficiary.getAppointments();
+		if (returnedBeneficiary.getVaccinationCentre().getId() == id) {
+			VaccinationCentreRequestDto responseDto = new VaccinationCentreRequestDto();
+			responseDto.setAadharNumber(returnedBeneficiary.getAdhaarNumber());
+			responseDto.setAge(returnedBeneficiary.getAge());
+			responseDto.setAppointmentDate(returnedAppointment.getAppointmentDate().toString());
+			responseDto.setName(returnedBeneficiary.getName());
+			responseDto.setStatus(returnedAppointment.isActive());
+
+			return responseDto;
 		}
 		return null;
 	}
 
 	@Override
-	public Integer updateCapacity(Integer id, VaccinationInventory capacity) {
-		// TODO Auto-generated method stub
-		Optional<VaccinationCentre> returnedVaccinationCentre=repository.findById(id);
-		if(returnedVaccinationCentre.get().getInventory()==null)
-		{
-			VaccinationInventory newInventory=new VaccinationInventory();
-			newInventory.setCentreCapacity(capacity.getCentreCapacity());
+	public Integer updateCapacity(Integer id, Integer capacity) {
+		Optional<VaccinationCentre> returnedVaccinationCentre = repository.findById(id);
+		if (returnedVaccinationCentre.get().getInventory() == null) {
+			VaccinationInventory newInventory = new VaccinationInventory();
+			newInventory.setCentreCapacity(capacity);
 			returnedVaccinationCentre.get().addInventory(newInventory);
 			vaccinationInventoryRepo.save(newInventory);
 			return newInventory.getCentreCapacity();
-		}
-		else
-		{
+		} else {
 
-			VaccinationInventory returnedInventory=returnedVaccinationCentre.get().getInventory();
-			returnedInventory.setCentreCapacity(capacity.getCentreCapacity());
+			VaccinationInventory returnedInventory = returnedVaccinationCentre.get().getInventory();
+			returnedInventory.setCentreCapacity(capacity);
 			vaccinationInventoryRepo.save(returnedInventory);
 			return returnedInventory.getCentreCapacity();
 		}
-		
+
 	}
 
 	@Override
-	public Integer updateStock(Integer id, VaccinationInventory stock) {
-		// TODO Auto-generated method stub
-		Optional<VaccinationCentre> returnedVaccinationCentre=repository.findById(id);
-		if(returnedVaccinationCentre.get().getInventory()==null)
-		{
-			VaccinationInventory newInventory=new VaccinationInventory();
-			newInventory.setCentreCapacity(stock.getCentreInventory());
+	public Integer updateStock(Integer id, Integer stock) {
+		Optional<VaccinationCentre> returnedVaccinationCentre = repository.findById(id);
+		if (returnedVaccinationCentre.get().getInventory() == null) {
+			VaccinationInventory newInventory = new VaccinationInventory();
+			newInventory.setCentreCapacity(stock);
 			returnedVaccinationCentre.get().addInventory(newInventory);
 			vaccinationInventoryRepo.save(newInventory);
 			return newInventory.getCentreInventory();
-		}
-		else
-		{
+		} else {
 
-			VaccinationInventory returnedInventory=returnedVaccinationCentre.get().getInventory();
-			returnedInventory.setCentreInventory(stock.getCentreInventory());
+			VaccinationInventory returnedInventory = returnedVaccinationCentre.get().getInventory();
+			returnedInventory.setCentreInventory(stock);
 			vaccinationInventoryRepo.save(returnedInventory);
 			return returnedInventory.getCentreInventory();
-		}	
+		}
 	}
 
 	@Override
 	public VaccinationInventory getCapacityAndStock(Integer id) {
-		// TODO Auto-generated method stub
-		Optional<VaccinationCentre> vaccinationCentre=repository.findById(id);
+		Optional<VaccinationCentre> vaccinationCentre = repository.findById(id);
 		return vaccinationCentre.get().getInventory();
 	}
 
 	@Override
 	public Integer getBeneficiaryReports(Integer id) {
-		// TODO Auto-generated method stub
-		Optional<VaccinationCentre> returnedVaccinationCentre=repository.findById(id);
-		List<Beneficiary> listOfBeneficiary=beneficiaryRepo.findByVaccinationCentre(returnedVaccinationCentre.get());
-		for(Beneficiary b: listOfBeneficiary)
-			System.out.println(b.getVaccinationCentre()+b.getName());
+		Optional<VaccinationCentre> returnedVaccinationCentre = repository.findById(id);
+		List<Beneficiary> listOfBeneficiary = beneficiaryRepo.findByVaccinationCentre(returnedVaccinationCentre.get());
 		return listOfBeneficiary.size();
 	}
 
 	@Override
 	public List<VaccinationCentreFeedbackDto> getBeneficairyFeedbackList(Integer id) {
-		// TODO Auto-generated method stub
-		Optional<VaccinationCentre> returnedVaccinationCentre=repository.findById(id);
-		List<Beneficiary> listOfBeneficiary=beneficiaryRepo.findByVaccinationCentre(returnedVaccinationCentre.get());
-		List<VaccinationCentreFeedbackDto> listOfFeedback=new ArrayList<>();
-		for(Beneficiary b : listOfBeneficiary)
-		{
-			Period p=Period.between(LocalDate.now(), b.getAppointments().getAppointmentDate());
-			int days=p.getDays();
-			listOfFeedback.add(new VaccinationCentreFeedbackDto(b.getAdhaarNumber(),b.getName(),days,b.getFeedback().getAdverseEffect()));
+		Optional<VaccinationCentre> returnedVaccinationCentre = repository.findById(id);
+		List<Beneficiary> listOfBeneficiary = beneficiaryRepo.findByVaccinationCentre(returnedVaccinationCentre.get());
+		List<VaccinationCentreFeedbackDto> listOfFeedback = new ArrayList<>();
+		for (Beneficiary b : listOfBeneficiary) {
+			if (!b.getAppointments().isActive() && b.getFeedback() != null) {
+				Period p = Period.between(LocalDate.now(), b.getAppointments().getAppointmentDate());
+				int days = p.getDays();
+				listOfFeedback.add(new VaccinationCentreFeedbackDto(b.getAdhaarNumber(), b.getName(), days,
+						b.getFeedback().getAdverseEffect()));
+			}
 		}
 		return listOfFeedback;
 	}
 
 	@Override
-	public Beneficiary updateStatus(String aadharNumber) {
-		// TODO Auto-generated method stub
-		Beneficiary returnedBeneficiary=beneficiaryRepo.findByAdhaarNumber(aadharNumber);
+	public Beneficiary updateStatus(String adhaarNumber) {
+		Beneficiary returnedBeneficiary = beneficiaryRepo.findByAdhaarNumber(adhaarNumber);
 		returnedBeneficiary.setVaccinated(true);
-		Appointment updatedAppointment=returnedBeneficiary.getAppointments();
+		Appointment updatedAppointment = returnedBeneficiary.getAppointments();
 		updatedAppointment.setActive(false);
-		
+
 		appointmentRepo.save(updatedAppointment);
 		return beneficiaryRepo.save(returnedBeneficiary);
 	}
