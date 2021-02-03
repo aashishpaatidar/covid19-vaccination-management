@@ -28,4 +28,9 @@ public class CovidApiController {
                                                 @PathVariable("district") String district) {
         return new ResponseEntity<>(apiService.getDistrictWiseDetails(state, district), HttpStatus.OK);
     }
+
+    @GetMapping("/state_list")
+    public ResponseEntity<?> getStateNames() {
+        return new ResponseEntity<>(apiService.getStateList(), HttpStatus.OK);
+    }
 }
