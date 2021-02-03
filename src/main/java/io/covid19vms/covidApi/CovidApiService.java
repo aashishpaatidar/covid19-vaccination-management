@@ -1,14 +1,10 @@
 package io.covid19vms.covidApi;
 
-import io.covid19vms.authDto.StateList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -114,7 +110,7 @@ public class CovidApiService {
         return new CovidDto(active, confirmed, deceased, recovered);
     }
 
-    public StateList getStateList() {
-        return new StateList(new TreeSet<>(api.jsonDataMapperApi().keySet()));
+    public Set<String> getStateList() {
+        return new TreeSet<>(api.jsonDataMapperApi().keySet());
     }
 }
