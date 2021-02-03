@@ -27,13 +27,13 @@ public class BeneficiaryServiceImpl implements BeneficiaryService {
 	@Override
 	public Beneficiary applyForVaccination(Beneficiary beneficiary, Integer id) {
 		Optional<Beneficiary> optionalBeneficiary = beneficiaryRepo.findById(id);
-		if (optionalBeneficiary.isPresent()) {
+		optionalBeneficiary.ifPresent(b -> {
 			DistrictUserRequest request = new DistrictUserRequest();
 			request.setRequestDate(LocalDate.now());
-			optionalBeneficiary.get().addDistrictUserRequest(request);
-			optionalBeneficiary.get().setAdhaarNumber(beneficiary.getAdhaarNumber());
-			optionalBeneficiary.get().setAge(beneficiary.getAge());
-		}
+			b.addDistrictUserRequest(request);
+			b.setAdhaarNumber(beneficiary.getAdhaarNumber());
+			b.setAge(beneficiary.getAge());
+		});
 		return beneficiaryRepo.save(optionalBeneficiary.get());
 	}
 
