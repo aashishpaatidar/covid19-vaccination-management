@@ -1,7 +1,5 @@
 package io.covid19vms.entity;
 
-
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
