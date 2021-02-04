@@ -44,12 +44,11 @@ public class DistrictOfficeController {
 	}
 
 	@PutMapping("/applications/{id}")
-	public ResponseEntity<?> updateDistrictId(@PathVariable Integer id, @RequestParam Integer centreId) {
+	public ResponseEntity<?> updateDistrictId(@PathVariable Integer id, @RequestBody Integer centreId) {
 		try {
 			districtService.updateDistrictOfficeId(id, centreId);
 			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
@@ -59,7 +58,6 @@ public class DistrictOfficeController {
 		try {
 			return new ResponseEntity<>(districtService.getApprovedCentres(id), HttpStatus.ACCEPTED);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
@@ -70,7 +68,6 @@ public class DistrictOfficeController {
 			districtService.updateInventory(centreId, inventory);
 			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
@@ -80,7 +77,6 @@ public class DistrictOfficeController {
 		try {
 			return new ResponseEntity<>(districtService.showDOInventory(id), HttpStatus.ACCEPTED);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
@@ -91,7 +87,6 @@ public class DistrictOfficeController {
 			districtService.updateDOInventory(id, inventory);
 			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}

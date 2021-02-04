@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import io.covid19vms.entity.Beneficiary;
 import io.covid19vms.entity.DistrictOffice;
 import io.covid19vms.entity.VaccinationCentre;
-import io.covid19vms.entity.VaccinationInventory;
 import io.covid19vms.repository.BeneficiaryRepository;
 import io.covid19vms.repository.DistrictOfficeRepository;
 import io.covid19vms.repository.VaccinationCentreRepository;
@@ -76,11 +75,9 @@ public class DistrictOfficeServiceImpl implements DistrictOfficeService {
 	@Override
 	public VaccinationCentre updateInventory(Integer Id, Integer inventory) {
 		Optional<VaccinationCentre> vaccinationCentre = vaccinationRepo.findById(Id);
-
-		VaccinationInventory vaccinationInventory = new VaccinationInventory();
-		vaccinationInventory.setCentreInventory(inventory);
-		vaccinationCentre.get().addInventory(vaccinationInventory);
-
+		
+		vaccinationCentre.get().getInventory().setCentreInventory(inventory);
+		
 		return vaccinationRepo.save(vaccinationCentre.get());
 	}
 
@@ -92,9 +89,9 @@ public class DistrictOfficeServiceImpl implements DistrictOfficeService {
 	@Override
 	public DistrictOffice updateDOInventory(Integer Id, Integer inventory) {
 		Optional<DistrictOffice> districtOffice = repository.findById(Id);
-
+		
 		districtOffice.get().setDistrictInventory(inventory);
-
+		
 		return repository.save(districtOffice.get());
 	}
 }
