@@ -29,7 +29,7 @@ public class VaccinationCentre extends User {
     private List<Beneficiary> beneficiaryList = new ArrayList<>();
 
     @JsonIgnoreProperties("centre")
-    @OneToOne(mappedBy = "centre")
+    @OneToOne(mappedBy = "centre", cascade = CascadeType.ALL)
     private VaccinationInventory inventory;
 
     public VaccinationCentre() {

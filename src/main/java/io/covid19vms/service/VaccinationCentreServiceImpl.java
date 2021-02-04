@@ -25,12 +25,16 @@ import io.covid19vms.repository.VaccinationInventoryRepository;
 @Service
 @Transactional
 public class VaccinationCentreServiceImpl implements VaccinationCentreService {
+
 	@Autowired
 	private VaccinationCentreRepository repository;
+
 	@Autowired
 	private VaccinationInventoryRepository vaccinationInventoryRepo;
+
 	@Autowired
 	private BeneficiaryRepository beneficiaryRepo;
+
 	@Autowired
 	private AppointmentRepository appointmentRepo;
 
@@ -42,7 +46,9 @@ public class VaccinationCentreServiceImpl implements VaccinationCentreService {
 	@Override
 	public VaccinationCentreRequestDto getDetailsByAadhar(Integer id, String adhaarNumber) {
 		Beneficiary returnedBeneficiary = beneficiaryRepo.findByAdhaarNumber(adhaarNumber);
+
 		Appointment returnedAppointment = returnedBeneficiary.getAppointments();
+
 		if (returnedBeneficiary.getVaccinationCentre().getId() == id) {
 			VaccinationCentreRequestDto responseDto = new VaccinationCentreRequestDto();
 			responseDto.setAadharNumber(returnedBeneficiary.getAdhaarNumber());
@@ -59,20 +65,23 @@ public class VaccinationCentreServiceImpl implements VaccinationCentreService {
 	@Override
 	public Integer updateCapacity(Integer id, Integer capacity) {
 		Optional<VaccinationCentre> returnedVaccinationCentre = repository.findById(id);
+
 		if (returnedVaccinationCentre.get().getInventory() == null) {
 			VaccinationInventory newInventory = new VaccinationInventory();
+
 			newInventory.setCentreCapacity(capacity);
 			returnedVaccinationCentre.get().addInventory(newInventory);
+
 			vaccinationInventoryRepo.save(newInventory);
+
 			return newInventory.getCentreCapacity();
 		} else {
-
 			VaccinationInventory returnedInventory = returnedVaccinationCentre.get().getInventory();
 			returnedInventory.setCentreCapacity(capacity);
 			vaccinationInventoryRepo.save(returnedInventory);
+
 			return returnedInventory.getCentreCapacity();
 		}
-
 	}
 
 	@Override
@@ -102,15 +111,19 @@ public class VaccinationCentreServiceImpl implements VaccinationCentreService {
 	@Override
 	public Integer getBeneficiaryReports(Integer id) {
 		Optional<VaccinationCentre> returnedVaccinationCentre = repository.findById(id);
+
 		List<Beneficiary> listOfBeneficiary = beneficiaryRepo.findByVaccinationCentre(returnedVaccinationCentre.get());
+
 		return listOfBeneficiary.size();
 	}
 
 	@Override
 	public List<VaccinationCentreFeedbackDto> getBeneficairyFeedbackList(Integer id) {
 		Optional<VaccinationCentre> returnedVaccinationCentre = repository.findById(id);
+
 		List<Beneficiary> listOfBeneficiary = beneficiaryRepo.findByVaccinationCentre(returnedVaccinationCentre.get());
 		List<VaccinationCentreFeedbackDto> listOfFeedback = new ArrayList<>();
+
 		for (Beneficiary b : listOfBeneficiary) {
 			if (!b.getAppointments().isActive() && b.getFeedback() != null) {
 				Period p = Period.between(LocalDate.now(), b.getAppointments().getAppointmentDate());
@@ -125,11 +138,13 @@ public class VaccinationCentreServiceImpl implements VaccinationCentreService {
 	@Override
 	public Beneficiary updateStatus(String adhaarNumber) {
 		Beneficiary returnedBeneficiary = beneficiaryRepo.findByAdhaarNumber(adhaarNumber);
+
 		returnedBeneficiary.setVaccinated(true);
 		Appointment updatedAppointment = returnedBeneficiary.getAppointments();
 		updatedAppointment.setActive(false);
 
 		appointmentRepo.save(updatedAppointment);
+
 		return beneficiaryRepo.save(returnedBeneficiary);
 	}
 }

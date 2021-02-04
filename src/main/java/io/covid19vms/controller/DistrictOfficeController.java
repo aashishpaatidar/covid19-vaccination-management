@@ -18,107 +18,81 @@ import io.covid19vms.service.DistrictOfficeService;
 @RestController
 @CrossOrigin
 public class DistrictOfficeController {
-		
-		@Autowired
-		private DistrictOfficeService districtService;
-	
-	
-	@GetMapping("/reports/{id}")
-	public ResponseEntity<?> getTotalVaccinatedCount(@PathVariable Integer id)
-	{
-		try {
-			return new  ResponseEntity<>(districtService.getCountOfBeneficiaries(id),HttpStatus.ACCEPTED);
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		
-	}
-	
-	@GetMapping("/applications/{id}")
-	public ResponseEntity<?> getListOfVaccinationCentres(@PathVariable Integer id)
-	{
-		try {
-			return new ResponseEntity<>(districtService.getUnapprovedCentres(id),HttpStatus.ACCEPTED);
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}	
-	}	
 
+	@Autowired
+	private DistrictOfficeService districtService;
+
+	@GetMapping("/reports/{id}")
+	public ResponseEntity<?> getTotalVaccinatedCount(@PathVariable Integer id) {
+		try {
+			return new ResponseEntity<>(districtService.getCountOfBeneficiaries(id), HttpStatus.ACCEPTED);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+	}
+
+	@GetMapping("/applications/{id}")
+	public ResponseEntity<?> getListOfVaccinationCentres(@PathVariable Integer id) {
+		try {
+			return new ResponseEntity<>(districtService.getUnapprovedCentres(id), HttpStatus.ACCEPTED);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
 
 	@PutMapping("/applications/{id}")
-	public ResponseEntity<?> updateDistrictId(@PathVariable Integer id,@RequestBody Integer centreId)
-	{
+	public ResponseEntity<?> updateDistrictId(@PathVariable Integer id, @RequestParam Integer centreId) {
 		try {
 			districtService.updateDistrictOfficeId(id, centreId);
 			return new ResponseEntity<>(HttpStatus.OK);
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}	
-	}	
-	
-	@GetMapping("/centres/{id}")
-	public ResponseEntity<?> getListOfCentres(@PathVariable Integer id)
-	{
-		try {
-			return new ResponseEntity<>(districtService.getApprovedCentres(id),HttpStatus.ACCEPTED);
-		}
-		catch(Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
-	
-	@PutMapping("/centres") 
-	public ResponseEntity<?> updateInventory(@RequestParam Integer inventory,@RequestBody Integer centreId)
-	{
+
+	@GetMapping("/centres/{id}")
+	public ResponseEntity<?> getListOfCentres(@PathVariable Integer id) {
+		try {
+			return new ResponseEntity<>(districtService.getApprovedCentres(id), HttpStatus.ACCEPTED);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+
+	@PutMapping("/centres")
+	public ResponseEntity<?> updateInventory(@RequestParam Integer inventory, @RequestBody Integer centreId) {
 		try {
 			districtService.updateInventory(centreId, inventory);
 			return new ResponseEntity<>(HttpStatus.OK);
-		}
-		catch(Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
-	
+
 	@GetMapping("/inventory/{id}")
-	public ResponseEntity<?> showInventory(@PathVariable Integer id)
-	{
+	public ResponseEntity<?> showInventory(@PathVariable Integer id) {
 		try {
-			return new ResponseEntity<>(districtService.showDOInventory(id),HttpStatus.ACCEPTED);
-		}
-		catch(Exception e)
-		{
+			return new ResponseEntity<>(districtService.showDOInventory(id), HttpStatus.ACCEPTED);
+		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
-	
-	
-	
+
 	@PutMapping("/inventory/{id}")
-	public ResponseEntity<?> updateDistrictInventory(@PathVariable Integer id,@RequestBody Integer inventory)
-	{
+	public ResponseEntity<?> updateDistrictInventory(@PathVariable Integer id, @RequestBody Integer inventory) {
 		try {
 			districtService.updateDOInventory(id, inventory);
 			return new ResponseEntity<>(HttpStatus.OK);
-		}
-		catch(Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
-	
 }
