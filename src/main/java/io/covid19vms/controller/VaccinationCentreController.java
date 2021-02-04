@@ -56,6 +56,7 @@ public class VaccinationCentreController {
 	@GetMapping("/request/{id}")
 	public ResponseEntity<?> getDetailsByAadhar(@PathVariable Integer id, @RequestParam String adhaarNumber) {
 		try {
+			System.out.println(adhaarNumber);
 			return new ResponseEntity<>(service.getDetailsByAadhar(id, adhaarNumber), HttpStatus.OK);
 		} catch (RuntimeException e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -68,6 +69,7 @@ public class VaccinationCentreController {
 			service.updateStatus(adhaarNumber);
 			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (RuntimeException e) {
+			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}

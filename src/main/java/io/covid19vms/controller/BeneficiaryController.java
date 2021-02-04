@@ -25,9 +25,12 @@ public class BeneficiaryController {
 	@PostMapping("/apply_for_vaccination/{id}")
 	public ResponseEntity<?> applyForVaccination(@PathVariable Integer id, @RequestBody Beneficiary beneficiary) {
 		try {
-			beneficiaryService.applyForVaccination(beneficiary, id);
-			return new ResponseEntity<>(HttpStatus.OK);
+			if(beneficiaryService.applyForVaccination(beneficiary, id) != null)
+				return new ResponseEntity<>(HttpStatus.OK);
+
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} catch (RuntimeException e) {
+			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}

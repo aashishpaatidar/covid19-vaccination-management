@@ -17,6 +17,7 @@ public interface VaccinationCentreService {
     Integer getBeneficiaryReports(Integer id);
     List<VaccinationCentreFeedbackDto> getBeneficairyFeedbackList(Integer id);
     Beneficiary updateStatus(String aadharNumber);
+    VaccinationCentre saveBeneficiary(Beneficiary beneficiary, int id);
     
     
 }

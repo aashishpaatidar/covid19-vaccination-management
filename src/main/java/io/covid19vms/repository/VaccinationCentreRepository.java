@@ -12,6 +12,9 @@ import io.covid19vms.entity.VaccinationCentre;
 public interface VaccinationCentreRepository extends JpaRepository<VaccinationCentre, Integer> {
 	@Query("select c from VaccinationCentre c where c.districtOffice=null and c.district.id=:id")
 	List<VaccinationCentre> getUnapprovedVaccinationCentres(@Param("id") Integer id);
-	
+
+	@Query("select v from VaccinationCentre v where v.district.id = :id")
+	List<VaccinationCentre> getAllVaccinationCentres(@Param("id") int id);
+
 	List<VaccinationCentre> findByDistrictOffice(DistrictOffice districtOffice);
 }

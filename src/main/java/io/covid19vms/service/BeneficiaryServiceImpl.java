@@ -1,16 +1,15 @@
 package io.covid19vms.service;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import io.covid19vms.dto.ScheduleDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.covid19vms.entity.Beneficiary;
 import io.covid19vms.entity.BeneficiaryFeedback;
-import io.covid19vms.entity.DistrictUserRequest;
 import io.covid19vms.repository.BeneficiaryRepository;
 
 @Service
@@ -21,19 +20,26 @@ public class BeneficiaryServiceImpl implements BeneficiaryService {
 	private BeneficiaryRepository beneficiaryRepo;
 
 	@Autowired
-	private DistrictUserRequestService districtUserService;
+	private DistrictOfficeService officeService;
+
+	@Autowired
+	private VaccinationCentreService vaccinationCentreService;
 
 	@Override
 	public Beneficiary applyForVaccination(Beneficiary beneficiary, Integer id) {
 		Optional<Beneficiary> optionalBeneficiary = beneficiaryRepo.findById(id);
-		optionalBeneficiary.ifPresent(b -> {
-			DistrictUserRequest request = new DistrictUserRequest();
-			request.setRequestDate(LocalDate.now());
-			request.setDistrictBeneficiary(optionalBeneficiary.get());
-			districtUserService.saveDistrictUserRequest(request);
-			b.setAdhaarNumber(beneficiary.getAdhaarNumber());
-			b.setAge(beneficiary.getAge());
-		});
+		if(optionalBeneficiary.isPresent()) {
+			optionalBeneficiary.get().setAdhaarNumber(beneficiary.getAdhaarNumber());
+			optionalBeneficiary.get().setAge(beneficiary.getAge());
+			ScheduleDto dto = officeService.scheduleAppointment(optionalBeneficiary.get()
+					.getDistrict().getId());
+
+			if(dto == null)
+				return null;
+
+			vaccinationCentreService.saveBeneficiary(optionalBeneficiary.get(), dto.getCentreId());
+			optionalBeneficiary.get().addAppointments(dto.getAppointment());
+		}
 		return beneficiaryRepo.save(optionalBeneficiary.get());
 	}
 

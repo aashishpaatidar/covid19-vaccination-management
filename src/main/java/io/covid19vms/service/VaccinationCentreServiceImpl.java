@@ -45,18 +45,17 @@ public class VaccinationCentreServiceImpl implements VaccinationCentreService {
 
 	@Override
 	public VaccinationCentreRequestDto getDetailsByAadhar(Integer id, String adhaarNumber) {
-		Beneficiary returnedBeneficiary = beneficiaryRepo.findByAdhaarNumber(adhaarNumber);
-
-		Appointment returnedAppointment = returnedBeneficiary.getAppointments();
-
-		if (returnedBeneficiary.getVaccinationCentre().getId() == id) {
+		Beneficiary beneficiary = beneficiaryRepo.findByAdhaarNumber(adhaarNumber);
+		if(beneficiary != null && beneficiary.getVaccinationCentre().getId().equals(id)) {
 			VaccinationCentreRequestDto responseDto = new VaccinationCentreRequestDto();
-			responseDto.setAadharNumber(returnedBeneficiary.getAdhaarNumber());
-			responseDto.setAge(returnedBeneficiary.getAge());
-			responseDto.setAppointmentDate(returnedAppointment.getAppointmentDate().toString());
-			responseDto.setName(returnedBeneficiary.getName());
-			responseDto.setStatus(returnedAppointment.isActive());
+			responseDto.setAadharNumber(beneficiary.getAdhaarNumber());
+			responseDto.setAge(beneficiary.getAge());
+			responseDto.setName(beneficiary.getName());
 
+			if(beneficiary.getAppointments() != null) {
+				responseDto.setAppointmentDate(beneficiary.getAppointments().getAppointmentDate().toString());
+				responseDto.setStatus(beneficiary.getAppointments().isActive());
+			}
 			return responseDto;
 		}
 		return null;
@@ -138,13 +137,22 @@ public class VaccinationCentreServiceImpl implements VaccinationCentreService {
 	@Override
 	public Beneficiary updateStatus(String adhaarNumber) {
 		Beneficiary returnedBeneficiary = beneficiaryRepo.findByAdhaarNumber(adhaarNumber);
+		VaccinationInventory inventory = vaccinationInventoryRepo.findByCentre(returnedBeneficiary.getVaccinationCentre());
+		inventory.setCentreInventory(inventory.getCentreInventory() - 1);
+		vaccinationInventoryRepo.save(inventory);
 
 		returnedBeneficiary.setVaccinated(true);
 		Appointment updatedAppointment = returnedBeneficiary.getAppointments();
 		updatedAppointment.setActive(false);
-
 		appointmentRepo.save(updatedAppointment);
 
 		return beneficiaryRepo.save(returnedBeneficiary);
+	}
+
+	@Override
+	public VaccinationCentre saveBeneficiary(Beneficiary beneficiary, int id) {
+		Optional<VaccinationCentre> vc = repository.findById(id);
+		vc.get().addBeneficiary(beneficiary);
+		return repository.save(vc.get());
 	}
 }
