@@ -21,7 +21,10 @@ public class DistrictOffice extends User {
     @OneToOne(targetEntity = District.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "district_id")
     private District district;
-
+    
+    @Column(name="is_approved")
+    private Boolean isApproved=false;
+    
     @JsonIgnoreProperties("districtOffice")
     @OneToMany(mappedBy = "districtOffice")
     private List<VaccinationCentre> centres = new ArrayList<>();
@@ -65,4 +68,12 @@ public class DistrictOffice extends User {
         centres.add(centre);
         centre.setDistrictOffice(this);
     }
+
+	public Boolean getIsApproved() {
+		return isApproved;
+	}
+
+	public void setIsApproved(Boolean isApproved) {
+		this.isApproved = isApproved;
+	}
 }

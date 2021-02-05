@@ -6,13 +6,19 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-import io.covid19vms.dto.ScheduleDto;
-import io.covid19vms.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import io.covid19vms.dto.ScheduleDto;
+import io.covid19vms.entity.Appointment;
+import io.covid19vms.entity.Beneficiary;
+import io.covid19vms.entity.District;
+import io.covid19vms.entity.DistrictOffice;
+import io.covid19vms.entity.VaccinationCentre;
+import io.covid19vms.entity.VaccinationInventory;
 import io.covid19vms.repository.BeneficiaryRepository;
 import io.covid19vms.repository.DistrictOfficeRepository;
+import io.covid19vms.repository.DistrictRepository;
 import io.covid19vms.repository.VaccinationCentreRepository;
 
 @Service
@@ -21,6 +27,9 @@ public class DistrictOfficeServiceImpl implements DistrictOfficeService {
 
 	@Autowired
 	private DistrictOfficeRepository repository;
+
+	@Autowired
+	private DistrictRepository districtRepo;
 
 	@Autowired
 	private BeneficiaryRepository beneficiaryRepo;
@@ -131,5 +140,28 @@ public class DistrictOfficeServiceImpl implements DistrictOfficeService {
 		appointment.setAppointmentDate(localDate.plusDays(1));
 		appointment.setActive(true);
 		return new ScheduleDto(centreList.get(0).getId(), appointment);
+	}
+
+	@Override
+	public Integer getCountByDistrict(Integer id) {
+	
+		Optional<District> district=districtRepo.findById(id);
+		DistrictOffice districtOffice= repository.findByDistrict(district.get());
+		return getCountOfBeneficiaries(districtOffice.getId());
+		
+	}
+
+	@Override
+	public List<DistrictOffice> getUnapprovedDistrictOffices() {
+	
+		
+		return repository.findByIsApproved(false);
+	}
+
+	@Override
+	public DistrictOffice updateApprovedStatus(Integer id) {
+		Optional<DistrictOffice> districtOffice=repository.findById(id);
+		districtOffice.get().setIsApproved(true);
+		return repository.save(districtOffice.get());
 	}
 }

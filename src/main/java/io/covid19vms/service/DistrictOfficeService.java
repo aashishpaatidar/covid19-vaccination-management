@@ -1,10 +1,8 @@
 package io.covid19vms.service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import io.covid19vms.dto.ScheduleDto;
-import io.covid19vms.entity.Appointment;
 import io.covid19vms.entity.DistrictOffice;
 import io.covid19vms.entity.VaccinationCentre;
 
@@ -18,4 +16,7 @@ public interface DistrictOfficeService {
     Integer showDOInventory(Integer Id);
     DistrictOffice updateDOInventory(Integer Id,Integer inventory);
     ScheduleDto scheduleAppointment(int id);
+    Integer getCountByDistrict(Integer id);
+    List<DistrictOffice> getUnapprovedDistrictOffices();
+    DistrictOffice updateApprovedStatus(Integer id);
 }
