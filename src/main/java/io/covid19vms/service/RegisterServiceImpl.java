@@ -55,7 +55,6 @@ public class RegisterServiceImpl implements RegisterService {
             beneficiary.setPassword(encryptedPassword);
             beneficiary.setName(dto.getName());
             beneficiary.setUserRole(role);
-            beneficiary.setVaccinated(false);
             beneficiary.setDistrict(districtRepo.findById(dto.getDistrictId()).get());
             user.setId(beneficiaryService.saveBeneficiary(beneficiary).getId());
 

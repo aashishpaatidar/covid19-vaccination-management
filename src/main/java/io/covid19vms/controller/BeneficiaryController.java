@@ -4,12 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.covid19vms.dto.AppointmentDTO;
 import io.covid19vms.entity.Beneficiary;
 import io.covid19vms.entity.BeneficiaryFeedback;
 import io.covid19vms.service.BeneficiaryService;
@@ -22,10 +24,27 @@ public class BeneficiaryController {
 	@Autowired
 	private BeneficiaryService beneficiaryService;
 
+	@GetMapping("/appointment/{id}")
+	public ResponseEntity<?> getAppointmentDetails(@PathVariable Integer id) {
+		try {
+			Beneficiary returnedBeneficiary = beneficiaryService.getAppointment(id);
+
+			return new ResponseEntity<>(
+					new AppointmentDTO(returnedBeneficiary.getAppointments().getAppointmentDate().toString(),
+							returnedBeneficiary.getVaccinationCentre().getCentreName(),
+							returnedBeneficiary.getDistrict().getDistrictName()),
+					HttpStatus.OK);
+
+		} catch (RuntimeException e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+
 	@PostMapping("/apply_for_vaccination/{id}")
 	public ResponseEntity<?> applyForVaccination(@PathVariable Integer id, @RequestBody Beneficiary beneficiary) {
 		try {
-			if(beneficiaryService.applyForVaccination(beneficiary, id) != null)
+			if (beneficiaryService.applyForVaccination(beneficiary, id) != null)
 				return new ResponseEntity<>(HttpStatus.OK);
 
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -54,4 +54,9 @@ public class BeneficiaryServiceImpl implements BeneficiaryService {
 	public Beneficiary saveBeneficiary(Beneficiary beneficiary) {
 		return beneficiaryRepo.save(beneficiary);
 	}
+
+	@Override
+	public Beneficiary getAppointment(Integer id) {
+		return beneficiaryRepo.findById(id).get();
+	}
 }

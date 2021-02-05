@@ -9,4 +9,6 @@ public interface BeneficiaryService {
 	Beneficiary saveFeedback(BeneficiaryFeedback feedback, Integer id);
 
 	Beneficiary saveBeneficiary(Beneficiary beneficiary);
+	
+	Beneficiary getAppointment(Integer id);
 }

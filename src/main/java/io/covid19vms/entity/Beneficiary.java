@@ -25,7 +25,7 @@ public class Beneficiary extends User {
 	private Integer age;
 
 	@Column(name = "is_vaccinated")
-	private Boolean isVaccinated;
+	private Boolean isVaccinated=false;
 
 	@Column(name = "adhaar_no", length = 12, unique = true)
 	private String adhaarNumber;
