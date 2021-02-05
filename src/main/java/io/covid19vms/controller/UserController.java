@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,14 +33,18 @@ public class UserController {
 
     @PostMapping("/authenticate")
     public ResponseEntity<?> authenticateUser(@RequestBody AuthenticationRequest request) {
-        Authentication auth = authManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(),
-                request.getPassword()));
-        if(auth.isAuthenticated()) {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
-            UserDto dto = new UserDto(userRepo.findByEmail(request.getEmail()), jwtUtils.generateToken(userDetails));
-            return new ResponseEntity<>(dto, HttpStatus.OK);
+        try {
+            Authentication auth = authManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(),
+                    request.getPassword()));
+            if (auth.isAuthenticated()) {
+                UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
+                UserDto dto = new UserDto(userRepo.findByEmail(request.getEmail()), jwtUtils.generateToken(userDetails));
+                return new ResponseEntity<>(dto, HttpStatus.OK);
+            }
+            return new ResponseEntity<>("Forbidden request", HttpStatus.FORBIDDEN);
+        } catch (BadCredentialsException e) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        return new ResponseEntity<>("Unauthorized request",HttpStatus.UNAUTHORIZED);
     }
 
     @GetMapping("/admin")

@@ -37,7 +37,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/authenticate").permitAll()
                 .antMatchers("/covid/**").permitAll()
                 .antMatchers("/admin/**").permitAll()
-
                 .antMatchers("/lists/**").permitAll()
                 .antMatchers("/register").permitAll()
                 .antMatchers("/beneficiary/**").permitAll()

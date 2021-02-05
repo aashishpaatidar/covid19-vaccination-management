@@ -54,6 +54,7 @@ public class RegisterServiceImpl implements RegisterService {
             beneficiary.setEmail(dto.getEmail());
             beneficiary.setPassword(encryptedPassword);
             beneficiary.setName(dto.getName());
+            beneficiary.setUserName(dto.getName());
             beneficiary.setUserRole(role);
             beneficiary.setDistrict(districtRepo.findById(dto.getDistrictId()).get());
             user.setId(beneficiaryService.saveBeneficiary(beneficiary).getId());
@@ -64,6 +65,7 @@ public class RegisterServiceImpl implements RegisterService {
             vc.setEmail(dto.getEmail());
             vc.setPassword(encryptedPassword);
             vc.setCentreName(dto.getName());
+            vc.setUserName(dto.getName());
             vc.setUserRole(role);
             vc.setDistrict(districtRepo.findById(dto.getDistrictId()).get());
             vc.addInventory(new VaccinationInventory(0,0));
@@ -74,6 +76,7 @@ public class RegisterServiceImpl implements RegisterService {
             office.setEmail(dto.getEmail());
             office.setPassword(encryptedPassword);
             office.setOfficeName(dto.getName());
+            office.setUserName(dto.getName());
             office.setUserRole(role);
             office.setDistrict(districtRepo.findById(dto.getDistrictId()).get());
             user.setId(officeService.saveDistrictOffice(office).getId());

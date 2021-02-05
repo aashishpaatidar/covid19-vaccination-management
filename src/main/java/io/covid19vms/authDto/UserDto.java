@@ -9,6 +9,7 @@ import java.util.Optional;
 public class UserDto {
     private int id;
     private String email;
+    private String name;
     private String role;
     private String token;
 
@@ -19,10 +20,9 @@ public class UserDto {
         user.ifPresent(u -> {
             this.id = u.getId();
             this.email =  u.getEmail();
+            this.name = u.getUserName();
             this.role = u.getUserRole().getRoleName().name();
             this.token = token;
-
-            System.out.println(token);
         });
     }
 
@@ -40,6 +40,14 @@ public class UserDto {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getRole() {

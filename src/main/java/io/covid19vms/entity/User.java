@@ -28,6 +28,9 @@ public class User extends BaseEntity {
     @Column(length = 100)
     private String password;
 
+    @Column(name = "name", length = 50)
+    private String userName;
+
     @JoinTable(name="user_roles",
             joinColumns = @JoinColumn(name="user_id", referencedColumnName="id"),
             inverseJoinColumns = @JoinColumn(name="role_id", referencedColumnName="id")
@@ -52,6 +55,14 @@ public class User extends BaseEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public Role getUserRole() {
