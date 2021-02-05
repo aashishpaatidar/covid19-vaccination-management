@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Table(name = "district")
 public class District extends BaseEntity {
 
-    @Column(name = "district_name", length = 30)
+    @Column(name = "district_name", length = 50)
     private String districtName;
 
     @ManyToOne(targetEntity = State.class, cascade = CascadeType.ALL)

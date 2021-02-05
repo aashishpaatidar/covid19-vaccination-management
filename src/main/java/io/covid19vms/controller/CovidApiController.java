@@ -23,14 +23,14 @@ public class CovidApiController {
         return new ResponseEntity<>(apiService.getStateWiseDetails(state), HttpStatus.OK);
     }
 
-    @GetMapping("/{state}/{district}")
-    public ResponseEntity<?> getDistrictDetails(@PathVariable("state") String state,
-                                                @PathVariable("district") String district) {
-        return new ResponseEntity<>(apiService.getDistrictWiseDetails(state, district), HttpStatus.OK);
+    @GetMapping("/district/{officeId}")
+    public ResponseEntity<?> getDistrictDetails(@PathVariable("officeId") int officeId) {
+        return new ResponseEntity<>(apiService.getDistrictWiseDetails(officeId), HttpStatus.OK);
     }
 
     @GetMapping("/state_list")
     public ResponseEntity<?> getStateNames() {
         return new ResponseEntity<>(apiService.getStateList(), HttpStatus.OK);
     }
+
 }

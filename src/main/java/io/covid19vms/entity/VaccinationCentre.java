@@ -12,7 +12,7 @@ import java.util.List;
 @Table(name = "vaccination_centre")
 public class VaccinationCentre extends User {
 
-    @Column(name = "centre_name", length = 12)
+    @Column(name = "centre_name", length = 50)
     private String centreName;
 
     @OneToOne(targetEntity = District.class, cascade = CascadeType.ALL)

@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @Table(name = "beneficiary")
 public class Beneficiary extends User {
 
-	@Column(length = 20)
+	@Column(length = 50)
 	private String name;
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)

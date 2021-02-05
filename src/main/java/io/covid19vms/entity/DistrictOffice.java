@@ -12,7 +12,7 @@ import java.util.List;
 @Table(name = "district_office")
 public class DistrictOffice extends User {
 
-    @Column(name = "office_name", length = 30)
+    @Column(name = "office_name", length = 50)
     private String officeName;
 
     @Column(name = "district_inventory")

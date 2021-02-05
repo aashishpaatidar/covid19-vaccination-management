@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Table(name = "state")
 public class State extends BaseEntity {
 
-    @Column(name = "state_name",length = 30)
+    @Column(name = "state_name", length = 50)
     private String stateName;
 
     public State() {
