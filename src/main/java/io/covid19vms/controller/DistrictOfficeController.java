@@ -67,6 +67,7 @@ public class DistrictOfficeController {
 			for (VaccinationCentre vc : centres) {
 				centreList.add(new CentreListDTO(vc.getId(), vc.getCentreName(), vc.getInventory().getCentreCapacity(),
 						vc.getInventory().getCentreInventory()));
+
 			}
 			return new ResponseEntity<>(centreList, HttpStatus.ACCEPTED);
 		} catch (Exception e) {

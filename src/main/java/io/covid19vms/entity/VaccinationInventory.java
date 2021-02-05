@@ -10,41 +10,47 @@ import javax.persistence.*;
 @Table(name = "centre_inventory")
 public class VaccinationInventory extends BaseEntity {
 
-    @Column(name = "inventory")
-    private int centreInventory;
+	@Column(name = "inventory")
+	private int centreInventory;
 
-    @Column(name = "capacity")
-    private int centreCapacity;
+	@Column(name = "capacity")
+	private int centreCapacity;
 
-    @JsonIgnoreProperties("inventory")
-    @OneToOne
-    @JoinColumn(name = "centre_id")
-    private VaccinationCentre centre;
+	@JsonIgnoreProperties("inventory")
+	@OneToOne
+	@JoinColumn(name = "centre_id")
+	private VaccinationCentre centre;
 
-    public VaccinationInventory() {
-    }
+	public VaccinationInventory() {
+	}
 
-    public int getCentreInventory() {
-        return centreInventory;
-    }
+	public VaccinationInventory(int centreInventory, int centreCapacity) {
+		super();
+		this.centreInventory = centreInventory;
+		this.centreCapacity = centreCapacity;
+	}
 
-    public void setCentreInventory(int centreInventory) {
-        this.centreInventory = centreInventory;
-    }
+	public int getCentreInventory() {
+		return centreInventory;
+	}
 
-    public int getCentreCapacity() {
-        return centreCapacity;
-    }
+	public void setCentreInventory(int centreInventory) {
+		this.centreInventory = centreInventory;
+	}
 
-    public void setCentreCapacity(int centreCapacity) {
-        this.centreCapacity = centreCapacity;
-    }
+	public int getCentreCapacity() {
+		return centreCapacity;
+	}
 
-    public VaccinationCentre getCentre() {
-        return centre;
-    }
+	public void setCentreCapacity(int centreCapacity) {
+		this.centreCapacity = centreCapacity;
+	}
 
-    public void setCentre(VaccinationCentre centre) {
-        this.centre = centre;
-    }
+	public VaccinationCentre getCentre() {
+		return centre;
+	}
+
+	public void setCentre(VaccinationCentre centre) {
+		this.centre = centre;
+	}
 }

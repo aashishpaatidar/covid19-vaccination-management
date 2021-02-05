@@ -66,6 +66,7 @@ public class RegisterServiceImpl implements RegisterService {
             vc.setCentreName(dto.getName());
             vc.setUserRole(role);
             vc.setDistrict(districtRepo.findById(dto.getDistrictId()).get());
+            vc.addInventory(new VaccinationInventory(0,0));
             user.setId(vaccinationCentreService.saveVaccinationCentre(vc).getId());
         }
         else {
