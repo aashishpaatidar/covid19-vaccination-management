@@ -12,10 +12,12 @@ import io.covid19vms.entity.VaccinationCentre;
 public interface BeneficiaryRepository extends JpaRepository<Beneficiary, Integer> {
 	Beneficiary findByAdhaarNumber(String aadharNumber);
 
-	List<Beneficiary> findByVaccinationCentre(VaccinationCentre vaccinationCentre);
+	@Query("select b from Beneficiary b where b.vaccinationCentre.id=:id and b.isVaccinated=true")
+	List<Beneficiary> getVaccinatedCountPerCentre(@Param("id") Integer id);
 	
 	@Query("select b from Beneficiary b where b.district.id=:id and b.isVaccinated=true")
 	List<Beneficiary> getVaccinatedCount(@Param("id") Integer id);
 	
-
+	List<Beneficiary> findByVaccinationCentre(VaccinationCentre centre);
+	
 }

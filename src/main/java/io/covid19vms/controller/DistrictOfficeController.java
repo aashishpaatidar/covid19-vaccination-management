@@ -1,5 +1,8 @@
 package io.covid19vms.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.covid19vms.dto.CentreListDTO;
+import io.covid19vms.entity.VaccinationCentre;
 import io.covid19vms.service.DistrictOfficeService;
 
 @RequestMapping("/district_office")
@@ -49,6 +54,7 @@ public class DistrictOfficeController {
 			districtService.updateDistrictOfficeId(id, centreId);
 			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {
+			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
@@ -56,8 +62,15 @@ public class DistrictOfficeController {
 	@GetMapping("/centres/{id}")
 	public ResponseEntity<?> getListOfCentres(@PathVariable Integer id) {
 		try {
-			return new ResponseEntity<>(districtService.getApprovedCentres(id), HttpStatus.ACCEPTED);
+			List<VaccinationCentre> centres = districtService.getApprovedCentres(id);
+			List<CentreListDTO> centreList = new ArrayList<CentreListDTO>();
+			for (VaccinationCentre vc : centres) {
+				centreList.add(new CentreListDTO(vc.getId(), vc.getCentreName(), vc.getInventory().getCentreCapacity(),
+						vc.getInventory().getCentreInventory()));
+			}
+			return new ResponseEntity<>(centreList, HttpStatus.ACCEPTED);
 		} catch (Exception e) {
+			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
@@ -68,6 +81,7 @@ public class DistrictOfficeController {
 			districtService.updateInventory(centreId, inventory);
 			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {
+			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}

@@ -46,13 +46,13 @@ public class VaccinationCentreServiceImpl implements VaccinationCentreService {
 	@Override
 	public VaccinationCentreRequestDto getDetailsByAadhar(Integer id, String adhaarNumber) {
 		Beneficiary beneficiary = beneficiaryRepo.findByAdhaarNumber(adhaarNumber);
-		if(beneficiary != null && beneficiary.getVaccinationCentre().getId().equals(id)) {
+		if (beneficiary != null && beneficiary.getVaccinationCentre().getId().equals(id)) {
 			VaccinationCentreRequestDto responseDto = new VaccinationCentreRequestDto();
 			responseDto.setAadharNumber(beneficiary.getAdhaarNumber());
 			responseDto.setAge(beneficiary.getAge());
 			responseDto.setName(beneficiary.getName());
 
-			if(beneficiary.getAppointments() != null) {
+			if (beneficiary.getAppointments() != null) {
 				responseDto.setAppointmentDate(beneficiary.getAppointments().getAppointmentDate().toString());
 				responseDto.setStatus(beneficiary.getAppointments().isActive());
 			}
@@ -109,9 +109,8 @@ public class VaccinationCentreServiceImpl implements VaccinationCentreService {
 
 	@Override
 	public Integer getBeneficiaryReports(Integer id) {
-		Optional<VaccinationCentre> returnedVaccinationCentre = repository.findById(id);
 
-		List<Beneficiary> listOfBeneficiary = beneficiaryRepo.findByVaccinationCentre(returnedVaccinationCentre.get());
+		List<Beneficiary> listOfBeneficiary = beneficiaryRepo.getVaccinatedCountPerCentre(id);
 
 		return listOfBeneficiary.size();
 	}
@@ -124,7 +123,7 @@ public class VaccinationCentreServiceImpl implements VaccinationCentreService {
 		List<VaccinationCentreFeedbackDto> listOfFeedback = new ArrayList<>();
 
 		for (Beneficiary b : listOfBeneficiary) {
-			if (!b.getAppointments().isActive() && b.getFeedback() != null) {
+			if (b.isVaccinated() && b.getFeedback() != null) {
 				Period p = Period.between(LocalDate.now(), b.getAppointments().getAppointmentDate());
 				int days = p.getDays();
 				listOfFeedback.add(new VaccinationCentreFeedbackDto(b.getAdhaarNumber(), b.getName(), days,
@@ -137,7 +136,8 @@ public class VaccinationCentreServiceImpl implements VaccinationCentreService {
 	@Override
 	public Beneficiary updateStatus(String adhaarNumber) {
 		Beneficiary returnedBeneficiary = beneficiaryRepo.findByAdhaarNumber(adhaarNumber);
-		VaccinationInventory inventory = vaccinationInventoryRepo.findByCentre(returnedBeneficiary.getVaccinationCentre());
+		VaccinationInventory inventory = vaccinationInventoryRepo
+				.findByCentre(returnedBeneficiary.getVaccinationCentre());
 		inventory.setCentreInventory(inventory.getCentreInventory() - 1);
 		vaccinationInventoryRepo.save(inventory);
 

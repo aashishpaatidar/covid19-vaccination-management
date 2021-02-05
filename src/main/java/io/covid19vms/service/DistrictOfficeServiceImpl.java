@@ -47,7 +47,6 @@ public class DistrictOfficeServiceImpl implements DistrictOfficeService {
 		Optional<DistrictOffice> districtOffice = repository.findById(Id);
 		List<Beneficiary> beneficiaryList = beneficiaryRepo
 				.getVaccinatedCount(districtOffice.get().getDistrict().getId());
-
 		return beneficiaryList.size();
 	}
 
@@ -78,7 +77,7 @@ public class DistrictOfficeServiceImpl implements DistrictOfficeService {
 	@Override
 	public VaccinationCentre updateInventory(Integer Id, Integer inventory) {
 		Optional<VaccinationCentre> vaccinationCentre = vaccinationRepo.findById(Id);
-		VaccinationInventory vaccinationInventory = new VaccinationInventory();
+		VaccinationInventory vaccinationInventory = vaccinationCentre.get().getInventory();
 		vaccinationInventory.setCentreInventory(inventory);
 		vaccinationCentre.get().addInventory(vaccinationInventory);
 
