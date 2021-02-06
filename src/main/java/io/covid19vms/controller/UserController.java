@@ -47,9 +47,4 @@ public class UserController {
         }
     }
 
-    @GetMapping("/admin")
-    public ResponseEntity<?> fetchUsers() {
-        return new ResponseEntity<>(userRepo.findAll(), HttpStatus.OK);
-    }
-
 }

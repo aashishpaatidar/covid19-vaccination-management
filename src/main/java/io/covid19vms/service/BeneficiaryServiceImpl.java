@@ -59,4 +59,9 @@ public class BeneficiaryServiceImpl implements BeneficiaryService {
 	public Beneficiary getAppointment(Integer id) {
 		return beneficiaryRepo.findById(id).get();
 	}
+
+	@Override
+	public int getVaccinatedCountByCountry() {
+		return beneficiaryRepo.getTotalVaccinatedCount();
+	}
 }

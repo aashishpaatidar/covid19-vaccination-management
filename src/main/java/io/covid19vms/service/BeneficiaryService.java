@@ -11,4 +11,6 @@ public interface BeneficiaryService {
 	Beneficiary saveBeneficiary(Beneficiary beneficiary);
 	
 	Beneficiary getAppointment(Integer id);
+
+	int getVaccinatedCountByCountry();
 }

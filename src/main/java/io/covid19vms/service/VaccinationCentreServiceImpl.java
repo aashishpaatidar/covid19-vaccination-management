@@ -109,16 +109,12 @@ public class VaccinationCentreServiceImpl implements VaccinationCentreService {
 
 	@Override
 	public Integer getBeneficiaryReports(Integer id) {
-
-		List<Beneficiary> listOfBeneficiary = beneficiaryRepo.getVaccinatedCountPerCentre(id);
-
-		return listOfBeneficiary.size();
+		return beneficiaryRepo.getVaccinatedCountPerCentre(id);
 	}
 
 	@Override
 	public List<VaccinationCentreFeedbackDto> getBeneficairyFeedbackList(Integer id) {
 		Optional<VaccinationCentre> returnedVaccinationCentre = repository.findById(id);
-
 		List<Beneficiary> listOfBeneficiary = beneficiaryRepo.findByVaccinationCentre(returnedVaccinationCentre.get());
 		List<VaccinationCentreFeedbackDto> listOfFeedback = new ArrayList<>();
 
@@ -136,8 +132,7 @@ public class VaccinationCentreServiceImpl implements VaccinationCentreService {
 	@Override
 	public Beneficiary updateStatus(String adhaarNumber) {
 		Beneficiary returnedBeneficiary = beneficiaryRepo.findByAdhaarNumber(adhaarNumber);
-		VaccinationInventory inventory = vaccinationInventoryRepo
-				.findByCentre(returnedBeneficiary.getVaccinationCentre());
+		VaccinationInventory inventory = vaccinationInventoryRepo.findByCentre(returnedBeneficiary.getVaccinationCentre());
 		inventory.setCentreInventory(inventory.getCentreInventory() - 1);
 		vaccinationInventoryRepo.save(inventory);
 

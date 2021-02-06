@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import io.covid19vms.dto.ScheduleDto;
 import io.covid19vms.entity.Appointment;
 import io.covid19vms.entity.Beneficiary;
-import io.covid19vms.entity.District;
 import io.covid19vms.entity.DistrictOffice;
 import io.covid19vms.entity.VaccinationCentre;
 import io.covid19vms.entity.VaccinationInventory;
@@ -45,17 +44,13 @@ public class DistrictOfficeServiceImpl implements DistrictOfficeService {
 	@Override
 	public Integer getCountOfBeneficiaries(Integer Id) {
 		Optional<DistrictOffice> districtOffice = repository.findById(Id);
-		List<Beneficiary> beneficiaryList = beneficiaryRepo
-				.getVaccinatedCount(districtOffice.get().getDistrict().getId());
-		return beneficiaryList.size();
+		 return beneficiaryRepo.getVaccinatedCount(districtOffice.get().getDistrict().getId());
 	}
 
 	@Override
 	public List<VaccinationCentre> getUnapprovedCentres(Integer Id) {
 		Optional<DistrictOffice> districtOffice = repository.findById(Id);
-
-		return vaccinationRepo
-				.getUnapprovedVaccinationCentres(districtOffice.get().getDistrict().getId());
+		return vaccinationRepo.getUnapprovedVaccinationCentres(districtOffice.get().getDistrict().getId());
 	}
 
 	@Override
@@ -143,17 +138,11 @@ public class DistrictOfficeServiceImpl implements DistrictOfficeService {
 
 	@Override
 	public Integer getCountByDistrict(Integer id) {
-	
-		Optional<District> district=districtRepo.findById(id);
-		DistrictOffice districtOffice= repository.findByDistrict(district.get());
-		return getCountOfBeneficiaries(districtOffice.getId());
-		
+		return beneficiaryRepo.getVaccinatedCount(id);
 	}
 
 	@Override
 	public List<DistrictOffice> getUnapprovedDistrictOffices() {
-	
-		
 		return repository.findByIsApproved(false);
 	}
 

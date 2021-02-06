@@ -35,7 +35,6 @@ public class DistrictOfficeController {
 			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-
 	}
 
 	@GetMapping("/applications/{id}")
