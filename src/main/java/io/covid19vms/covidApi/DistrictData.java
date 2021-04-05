@@ -2,8 +2,10 @@ package io.covid19vms.covidApi;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.io.Serializable;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DistrictData {
+public class DistrictData implements Serializable {
     private int active;
     private int confirmed;
     private int deceased;
@@ -42,5 +44,15 @@ public class DistrictData {
 
     public void setRecovered(int recovered) {
         this.recovered = recovered;
+    }
+
+    @Override
+    public String toString() {
+        return "DistrictData{" +
+                "active=" + active +
+                ", confirmed=" + confirmed +
+                ", deceased=" + deceased +
+                ", recovered=" + recovered +
+                '}';
     }
 }

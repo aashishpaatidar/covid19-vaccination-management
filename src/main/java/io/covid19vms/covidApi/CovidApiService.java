@@ -1,11 +1,16 @@
 package io.covid19vms.covidApi;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.covid19vms.entity.District;
 import io.covid19vms.repository.DistrictOfficeRepository;
 import io.covid19vms.repository.DistrictRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
@@ -141,5 +146,17 @@ public class CovidApiService {
                 .get(stateName)
                 .getDistrictData()
                 .keySet();
+    }
+
+    @PostConstruct
+    public void serializeHashMap() {
+        try {
+            FileOutputStream outputStream = new FileOutputStream("D:\\workspace\\cdac_project\\covid_map.ser");
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+            objectOutputStream.writeObject(api.jsonDataMapperApi());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
