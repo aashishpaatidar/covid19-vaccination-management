@@ -3,8 +3,6 @@ package io.covid19vms.entity;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity

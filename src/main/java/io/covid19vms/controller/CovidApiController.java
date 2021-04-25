@@ -1,6 +1,7 @@
 package io.covid19vms.controller;
 
 import io.covid19vms.covidApi.CovidApiService;
+import io.covid19vms.covidApi.CovidApiServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

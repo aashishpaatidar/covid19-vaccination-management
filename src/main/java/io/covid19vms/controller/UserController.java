@@ -41,7 +41,7 @@ public class UserController {
     @PostMapping("/authenticate")
     public ResponseEntity<?> authenticateUser(@RequestBody AuthenticationRequest request) {
         try {
-            logger.info("Lolling by... " + request.getEmail());
+            logger.info("Login request for " + request.getEmail());
 
             Authentication auth = authManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(),
                     request.getPassword()));
@@ -49,7 +49,7 @@ public class UserController {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
                 UserDto dto = new UserDto(userRepo.findByEmail(request.getEmail()), jwtUtils.generateToken(userDetails));
 
-                logger.info("Lolled by... " + dto.getName());
+                logger.info("Logged in by " + dto.getName());
 
                 return new ResponseEntity<>(dto, HttpStatus.OK);
             }
